@@ -36,8 +36,8 @@ public class Transaction {
     @Column(name = "price_usd", nullable = false)
     private BigDecimal priceUsd;
 
-    @Column(name = "transaction_date", updatable = false)
     @CreationTimestamp
+    @Column(name = "transaction_date", updatable = false)
     private Date transactionDate;
 
     @Enumerated(EnumType.STRING)
@@ -50,5 +50,6 @@ public class Transaction {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cryptocurrency_id", nullable = false)
-    private Cryptocurrency cryptocurrencyId;
+    private Cryptocurrency cryptocurrency;
+
 }
