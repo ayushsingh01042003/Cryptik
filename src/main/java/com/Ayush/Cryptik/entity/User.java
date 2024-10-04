@@ -31,6 +31,9 @@ public class User {
     @Column(name = "password_hash", nullable = false)
     private String password;
 
+    @Column(nullable = false)
+    private String roles;
+
     @CreationTimestamp
     @Column(updatable = false, name = "created_at")
     private Date createdAt;
@@ -40,4 +43,5 @@ public class User {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Alert> alerts;
+
 }
