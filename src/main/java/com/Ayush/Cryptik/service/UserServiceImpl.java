@@ -1,5 +1,7 @@
 package com.Ayush.Cryptik.service;
 
+import java.util.Optional;
+
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -23,5 +25,13 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user);
         return "User added Successfully";
     }
-    
+
+    @Override
+    public boolean existsByEmail(String email) {
+        Optional<User> user = userRepository.findByEmail(email);
+        if(user.isPresent()) {
+            return true;
+        }
+        return false;
+    }
 }
