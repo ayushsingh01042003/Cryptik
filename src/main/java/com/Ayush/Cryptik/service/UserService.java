@@ -4,5 +4,5 @@ import com.Ayush.Cryptik.entity.User;
 
 public interface UserService {
     boolean existsByEmail(String email);
-    String addUser(User user);    
+    User addUser(User user);
 }

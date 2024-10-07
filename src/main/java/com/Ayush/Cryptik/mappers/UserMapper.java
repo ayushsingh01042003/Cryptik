@@ -5,7 +5,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import com.Ayush.Cryptik.dto.UserDTO;
 import com.Ayush.Cryptik.dto.UserRegistrationDTO;
 import com.Ayush.Cryptik.entity.User;
+import org.springframework.stereotype.Component;
 
+@Component
 public class UserMapper {
 
     private PasswordEncoder passwordEncoder;
