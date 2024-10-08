@@ -2,17 +2,11 @@ package com.Ayush.Cryptik.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
@@ -21,24 +15,20 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.List;
 
-import com.Ayush.Cryptik.service.CustomUserDetailsService;
-
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
 public class SecurityConfiguration {
     
     private JwtAuthenticationFilter authenticationFilter;
-    private CustomUserDetailsService customUserDetailsService;
+    private final AuthenticationProvider authenticationProvider;
 
-    public SecurityConfiguration(JwtAuthenticationFilter authenticationFilter, CustomUserDetailsService customUserDetailsService) {
-        this.authenticationFilter = authenticationFilter;
-        this.customUserDetailsService = customUserDetailsService;
-    }
-
-    @Bean
-    UserDetailsService userDetailsService() {
-        return customUserDetailsService;
+    public SecurityConfiguration(
+        JwtAuthenticationFilter jwtAuthenticationFilter,
+        AuthenticationProvider authenticationProvider
+    ) {
+        this.authenticationProvider = authenticationProvider;
+        this.authenticationFilter = jwtAuthenticationFilter;
     }
 
     @Bean
@@ -46,37 +36,16 @@ public class SecurityConfiguration {
         http
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/api/user/Signup", "/api/user/Login").permitAll()
-                .requestMatchers("/api/user/**").hasAuthority("ROLE_USER")
-                .requestMatchers("/api/user/**").hasAuthority("ROLE_ADMIN")
+                .requestMatchers("/api/auth/signup", "/api/auth/login").permitAll()
                 .anyRequest().authenticated()
             )
             .sessionManagement(sess -> sess
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             )
-            .authenticationProvider(authenticationProvider())
+            .authenticationProvider(authenticationProvider)
             .addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
-    }
-
-    @Bean
-    AuthenticationProvider authenticationProvider() {
-        var authenticationProvider = new DaoAuthenticationProvider();
-        authenticationProvider.setUserDetailsService(userDetailsService());
-        authenticationProvider.setPasswordEncoder(passwordEncoder());
-
-        return authenticationProvider;
-    }
-
-    @Bean
-    PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-
-    @Bean
-    AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
-        return config.getAuthenticationManager();
     }
 
     @Bean

@@ -14,7 +14,4 @@ public class UserRegistrationDTO {
     @NotBlank(message = "Password is required")
     @Size(min = 8, message = "Password must be at least 8 characters long")
     private String password;
-    
-    @NotBlank(message = "Specify a role for the user")
-    private String roles;
 }
