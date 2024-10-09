@@ -3,6 +3,7 @@ package com.Ayush.Cryptik.service;
 import org.springframework.stereotype.Service;
 
 import com.Ayush.Cryptik.dto.PortfolioDTO;
+import com.Ayush.Cryptik.dto.PortfolioResponseDTO;
 import com.Ayush.Cryptik.entity.Portfolio;
 import com.Ayush.Cryptik.entity.User;
 import com.Ayush.Cryptik.repository.PortfolioRespository;
@@ -26,6 +27,21 @@ public class PortfolioServiceImpl implements PortfolioService {
         portfolio.setUser(user);
         respository.save(portfolio);
         return portfolio;
+    }
+
+    @Override
+    public Portfolio getPortfolioById(Long Id) {
+        return respository
+        .findById(Id)
+        .orElseThrow(() -> new RuntimeException("Portfolio Id does not exist"));
+    }
+
+    @Override
+    public PortfolioResponseDTO toPortfolioResponseDTO(Portfolio portfolio) {
+        return new PortfolioResponseDTO(
+            portfolio.getPortfolioId(), 
+            portfolio.getName(),
+            portfolio.getCreatedAt()); 
     }
     
 }

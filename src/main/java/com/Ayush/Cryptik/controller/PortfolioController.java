@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.Ayush.Cryptik.dto.PortfolioDTO;
 import com.Ayush.Cryptik.dto.PortfolioResponseDTO;
+import com.Ayush.Cryptik.entity.Portfolio;
 import com.Ayush.Cryptik.entity.User;
 import com.Ayush.Cryptik.service.PortfolioService;
 import com.Ayush.Cryptik.service.UserService;
@@ -17,6 +18,9 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+
 
 
 @RestController
@@ -32,7 +36,6 @@ public class PortfolioController {
     }
 
     @PostMapping("/portfolio")
-    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<PortfolioResponseDTO> createPortfolio(@Valid @RequestBody PortfolioDTO portfolioDTO, Authentication authentication) {
         String userEmail = authentication.getName();
         User currUser = userService.findByEmail(userEmail);
@@ -46,4 +49,12 @@ public class PortfolioController {
         return new ResponseEntity<>(dto, HttpStatus.CREATED);
     }
 
+    @GetMapping("/portfolio/{id}")
+    // @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<PortfolioResponseDTO> getMethodName(@PathVariable Long id) {
+        Portfolio portfolio =  portfolioService.getPortfolioById(id);
+        var responseDTO = portfolioService.toPortfolioResponseDTO(portfolio);
+        return new ResponseEntity<>(responseDTO, HttpStatus.ACCEPTED);
+    }
+    
 }
