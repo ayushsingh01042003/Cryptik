@@ -2,32 +2,42 @@ package com.Ayush.Cryptik.controller;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.reactive.function.client.WebClient;
 
-import com.Ayush.Cryptik.dto.CryptocurrencyDTO;
-
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.http.ResponseEntity;
+import com.Ayush.Cryptik.service.CoinGeckoService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+
+import java.util.List;
+import java.util.Map;
+
+import java.math.BigDecimal;
+
+import reactor.core.publisher.Mono;
 
 
 @RestController
-@RequestMapping("/api/crytocurrencies")
+@RequestMapping("/api/cryptocurrencies")
 public class CryptocurrencyController {
 
-    private final WebClient webClient;
-    
-    public CryptocurrencyController( WebClient.Builder webClientBuilder) {
-        this.webClient = webClientBuilder.baseUrl("https://api.coingecko.com/api/v3/").build();
+    private CoinGeckoService coinGeckoService;
+
+    public CryptocurrencyController(CoinGeckoService coinGeckoService) {
+        this.coinGeckoService = coinGeckoService;
     }
 
-    // @GetMapping("/")
-    // public ResponseEntity<Page<CryptocurrencyDTO>> getCryptocurrencies(Pageable pageable) {
+    @GetMapping("/")
+    public String helloString() {
+        return new String("Hello");
+    }
+    
 
-    //     return new ResponseEntity<>();
-    // }
+    @GetMapping("/prices")
+    public Mono<ResponseEntity<Map<String, BigDecimal>>> getRealTimePrices(@RequestParam List<String> symbols) {
+        return coinGeckoService.getRealTimePrices(symbols)
+                .map(prices -> new ResponseEntity<>(prices, HttpStatus.OK));
+    }
     
 
 }

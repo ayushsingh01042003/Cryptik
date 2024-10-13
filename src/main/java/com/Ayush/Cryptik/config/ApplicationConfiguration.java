@@ -10,7 +10,7 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.web.reactive.function.client.WebClient;
 
 import com.Ayush.Cryptik.repository.UserRepository;
 
@@ -49,7 +49,7 @@ public class ApplicationConfiguration {
     }
 
     @Bean
-    RestTemplate restTemplate() {
-        return new RestTemplate();
+    WebClient.Builder webClientBuilder() {
+        return WebClient.builder();
     }
 }
