@@ -1,6 +1,7 @@
 package com.Ayush.Cryptik.config;
 
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -17,6 +18,9 @@ import com.Ayush.Cryptik.repository.UserRepository;
 @Configuration
 public class ApplicationConfiguration {
     private final UserRepository userRepository;
+
+    @Value("${coingecko.api.baseurl}")
+    private String coingeckoApiBaseUrl;
 
     public ApplicationConfiguration(UserRepository userRepository) {
         this.userRepository = userRepository;
@@ -49,7 +53,7 @@ public class ApplicationConfiguration {
     }
 
     @Bean
-    WebClient.Builder webClientBuilder() {
-        return WebClient.builder();
+    WebClient webClient() {
+      return WebClient.builder().baseUrl(coingeckoApiBaseUrl).build();
     }
 }

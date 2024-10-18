@@ -7,7 +7,6 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 import reactor.core.publisher.Mono;
 
-import java.math.BigDecimal;
 
 import java.util.Map;
 import java.util.HashMap;
@@ -16,35 +15,30 @@ import java.util.List;
 @Service
 public class CoinGeckoServiceImpl implements CoinGeckoService {
 
-    private final WebClient webClient;
+    private WebClient webClient;
 
-    @Value("${coingecko.api.baseurl}")
-    private String coingeckoApiBaseUrl;
-
-    public CoinGeckoServiceImpl(WebClient.Builder webClientBuilder) {
-        this.webClient = webClientBuilder.baseUrl(coingeckoApiBaseUrl).build();  // Set the base URL here
+    public CoinGeckoServiceImpl(WebClient webClient) {
+        this.webClient = webClient;
     }
 
     @Override
-    public Mono<Map<String, BigDecimal>> getRealTimePrices(List<String> symbols) {
+    public Mono<Map<String, Integer>> getRealTimePrices(List<String> symbols) {
         String ids = String.join(",", symbols);
-        System.out.println(coingeckoApiBaseUrl);
 
         return webClient
                 .get()
                 .uri(uriBuilder -> uriBuilder
-                    .path("/simple/price")  // Only provide the path, not the full URL
+                    .path("/simple/price")
                     .queryParam("ids", ids)
                     .queryParam("vs_currencies", "usd")
                     .build())
                 .retrieve()
                 .bodyToMono(new ParameterizedTypeReference<Map<String, Object>>() {})
                 .map(response -> {
-                    Map<String, BigDecimal> prices = new HashMap<>();
+                    Map<String, Integer> prices = new HashMap<>();
                     for (String symbol : symbols) {
-                        Map<String, BigDecimal> data = (Map<String, BigDecimal>) response.get(symbol.toLowerCase());
+                        Map<String, Integer> data = (Map<String, Integer>) response.get(symbol.toLowerCase());
 
-                        // Log response for each symbol
                         if (data == null || data.get("usd") == null) {
                             System.out.println("No data for symbol: " + symbol);
                         } else {
@@ -55,7 +49,6 @@ public class CoinGeckoServiceImpl implements CoinGeckoService {
                     return prices;
                 })
                 .doOnError(error -> {
-                    // Log the error if something goes wrong
                     System.err.println("Error fetching prices: " + error.getMessage());
                 });
     }

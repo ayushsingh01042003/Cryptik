@@ -12,8 +12,6 @@ import org.springframework.http.ResponseEntity;
 import java.util.List;
 import java.util.Map;
 
-import java.math.BigDecimal;
-
 import reactor.core.publisher.Mono;
 
 
@@ -34,7 +32,7 @@ public class CryptocurrencyController {
     
 
     @GetMapping("/prices")
-    public Mono<ResponseEntity<Map<String, BigDecimal>>> getRealTimePrices(@RequestParam List<String> symbols) {
+    public Mono<ResponseEntity<Map<String, Integer>>> getRealTimePrices(@RequestParam List<String> symbols) {
         return coinGeckoService.getRealTimePrices(symbols)
                 .map(prices -> new ResponseEntity<>(prices, HttpStatus.OK));
     }
