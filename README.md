@@ -15,7 +15,7 @@ A robust Spring Boot application for tracking and managing cryptocurrency portfo
 
 ## Technology Stack
 
-- Java 17
+- Java 21
 - Spring Boot 3.x
 - PostgreSQL
 - Spring Security
@@ -29,7 +29,61 @@ A robust Spring Boot application for tracking and managing cryptocurrency portfo
 
 ## Database Schema
 
-![Database Schema](database-schema.png)
+```mermaid
+erDiagram
+    USERS ||--o{ PORTFOLIOS : owns
+    USERS ||--o{ ALERTS : sets
+    USERS {
+        bigint user_id PK
+        varchar email UK
+        varchar password_hash
+        timestamp created_at
+        timestamp last_login
+    }
+    PORTFOLIOS ||--o{ TRANSACTIONS : contains
+    PORTFOLIOS {
+        bigint portfolio_id PK
+        bigint user_id FK
+        varchar name
+        timestamp created_at
+    }
+    TRANSACTIONS {
+        bigint transaction_id PK
+        bigint portfolio_id FK
+        bigint cryptocurrency_id FK
+        decimal amount
+        decimal price_usd
+        timestamp transaction_date
+        varchar transaction_type
+    }
+    CRYPTOCURRENCIES ||--o{ TRANSACTIONS : involves
+    CRYPTOCURRENCIES ||--o{ PRICE_HISTORY : has
+    CRYPTOCURRENCIES ||--o{ ALERTS : triggers
+    CRYPTOCURRENCIES {
+        bigint cryptocurrency_id PK
+        varchar symbol UK
+        varchar name
+        decimal current_price_usd
+        bigint market_cap_usd
+        decimal volume_24h_usd
+        timestamp last_updated
+    }
+    PRICE_HISTORY {
+        bigint price_history_id PK
+        bigint cryptocurrency_id FK
+        decimal price_usd
+        timestamp recorded_at
+    }
+    ALERTS {
+        bigint alert_id PK
+        bigint user_id FK
+        bigint cryptocurrency_id FK
+        decimal target_price
+        varchar condition
+        boolean is_triggered
+        timestamp created_at
+    }
+```
 
 ### Entity Relationships:
 - Users can have multiple portfolios and alerts
