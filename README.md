@@ -192,9 +192,6 @@ coingecko.api.key=your_api_key
 coingecko.api.base-url=https://api.coingecko.com/api/v3
 ```
 
-### Caching
-Cryptocurrency price data is cached for 5 minutes to reduce external API calls.
-
 ## Security
 
 - JWT-based authentication
@@ -203,18 +200,6 @@ Cryptocurrency price data is cached for 5 minutes to reduce external API calls.
 - Input validation on all endpoints
 - CORS configuration for frontend integration
 
-## Testing
-
-Run the tests using Maven:
-```bash
-mvn test
-```
-
-The project includes:
-- Unit tests for services
-- Integration tests for controllers
-- Repository tests for database operations
-
 ## Contributing
 
 1. Fork the repository
@@ -222,11 +207,3 @@ The project includes:
 3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
 4. Push to the branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details.
-
-## Contact
-
-Project Link: [https://github.com/yourusername/cryptik](https://github.com/yourusername/cryptik)
