@@ -4,14 +4,13 @@ A robust Spring Boot application for tracking and managing cryptocurrency portfo
 
 ## Features
 
-- 🔐 User authentication and authorization with JWT
-- 📊 Real-time cryptocurrency price tracking
-- 💼 Multiple portfolio management
-- 📈 Transaction tracking and portfolio performance analysis
-- ⚡ Real-time price alerts
-- 📱 RESTful API with rate limiting
-- 📄 Pagination and efficient data fetching
-- 🔄 Integration with external cryptocurrency APIs
+- User authentication and authorization with JWT
+- Real-time cryptocurrency price tracking
+- Multiple portfolio management
+- Transaction tracking and portfolio performance analysis
+- RESTful API with rate limiting
+- Pagination and efficient data fetching
+- Integration with external cryptocurrency APIs
 
 ## Technology Stack
 
@@ -199,11 +198,3 @@ coingecko.api.base-url=https://api.coingecko.com/api/v3
 - Rate limiting to prevent abuse
 - Input validation on all endpoints
 - CORS configuration for frontend integration
-
-## Contributing
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
