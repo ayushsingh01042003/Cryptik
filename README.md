@@ -179,11 +179,6 @@ The application will be available at `http://localhost:8080`
 
 ## Configuration
 
-### Rate Limiting
-Rate limiting is configured per endpoint:
-- Authentication endpoints: 3 requests per minute
-- API endpoints: 100 requests per minute per user
-
 ### External API Integration
 The application integrates with CoinGecko API for real-time cryptocurrency data. Configure the API key in application.properties:
 ```properties
